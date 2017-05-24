@@ -89,10 +89,16 @@ namespace AudioSwitch.Forms
             checkQSShowOSD.Enabled = radioQuickSwitch.Checked;
 
             checkQSShowOSD.Checked = Program.settings.QuickSwitchShowOSD;
-            
+
             gridHotkeys.CellEndEdit += gridHotkeys_CellEndEdit;
             gridHotkeys.RowsAdded += gridHotkeys_RowsAdded;
             gridHotkeys.RowsRemoved += gridHotkeys_RowsRemoved;
+
+            // Custom position
+            checkCustomPosition.Checked = Program.settings.CustomPosition.UseCustomPosition;
+            posTop.Text = Program.settings.CustomPosition.posTop;
+            posLeft.Text = Program.settings.CustomPosition.posLeft;
+
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
@@ -160,6 +166,11 @@ namespace AudioSwitch.Forms
             Program.settings.QuickSwitchEnabled = radioQuickSwitch.Checked;
             Program.settings.QuickSwitchShowOSD = checkQSShowOSD.Checked;
             Program.settings.UseCustomOSD = checkCustomOSD.Checked;
+
+            // Custom position
+            Program.settings.CustomPosition.UseCustomPosition = checkCustomPosition.Checked;
+            Program.settings.CustomPosition.posTop = posTop.Text;
+            Program.settings.CustomPosition.posLeft = posLeft.Text;
 
             Program.settings.Save();
         }
@@ -345,5 +356,21 @@ namespace AudioSwitch.Forms
         {
             textCustomName.Enabled = checkCustomName.Checked;
         }
+
+        private void checkCustomPosition_CheckedChanged(object sender, EventArgs e)
+        {
+            posCustom.Enabled = checkCustomPosition.Checked;
+        }
+
+        private void posTop_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
+        private void posLeft_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
     }
 }
