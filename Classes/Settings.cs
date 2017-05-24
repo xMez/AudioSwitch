@@ -37,7 +37,14 @@ namespace AudioSwitch.Classes
                     //, Enabled = false
                 },
                 Device = new List<CDevice>(),
-                Hotkey = new BindingList<Hotkey>()
+                Hotkey = new BindingList<Hotkey>(),
+
+                CustomPosition = new CCustomPosition
+                {
+                    UseCustomPosition = false,
+                    posLeft = "0",
+                    posTop = "0"
+                }
             };
         }
 
@@ -133,6 +140,21 @@ namespace AudioSwitch.Classes
 
             [XmlAttribute]
             public string CustomName;
+        }
+
+        [XmlElement]
+        public CCustomPosition CustomPosition;
+
+        public class CCustomPosition
+        {
+            [XmlAttribute]
+            public bool UseCustomPosition;
+
+            [XmlAttribute]
+            public string posLeft;
+
+            [XmlAttribute]
+            public string posTop;
         }
 
         internal void Save()
