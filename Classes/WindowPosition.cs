@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+//using AudioSwitch.Classes;
 using AudioSwitch.Forms;
 
 namespace AudioSwitch.Classes
@@ -108,12 +109,16 @@ namespace AudioSwitch.Classes
 
         public static Point GetWindowPosition(NotifyIcon notifyicon, int windowwidth, int windowheight)
         {
+            if (Program.settings.CustomPosition.UseCustomPosition)
+            {
+                return new Point(Int32.Parse(Program.settings.CustomPosition.posLeft), Int32.Parse(Program.settings.CustomPosition.posTop));
+            }
             Rectangle taskbar;
             var position = GetTaskbarPosition(out taskbar);
-            
+
             if (position == TaskbarPosition.Unknown)
-                return new Point((Screen.PrimaryScreen.WorkingArea.Width + windowwidth)/2,
-                                 (Screen.PrimaryScreen.WorkingArea.Height + windowheight)/2);
+                return new Point((Screen.PrimaryScreen.WorkingArea.Width + windowwidth) / 2,
+                                 (Screen.PrimaryScreen.WorkingArea.Height + windowheight) / 2);
 
             var rect = GetNotifyIconArea(notifyicon);
             var iconPos = new Point(rect.left + (rect.right - rect.left) / 2, rect.top + (rect.bottom - rect.top) / 2);
@@ -128,10 +133,10 @@ namespace AudioSwitch.Classes
             switch (position)
             {
                 case TaskbarPosition.Top:
-                    if (iconPos.X - windowwidth/2 > maxLeft)
+                    if (iconPos.X - windowwidth / 2 > maxLeft)
                         left = maxLeft;
                     else
-                        left = iconPos.X - windowwidth/2;
+                        left = iconPos.X - windowwidth / 2;
 
                     if (iconPos.Y > taskbar.Top + taskbar.Height)
                         top = iconPos.Y + iconOffset;
@@ -145,10 +150,10 @@ namespace AudioSwitch.Classes
                     else
                         left = taskbar.Left + taskbar.Width + windowOffset;
 
-                    if (iconPos.Y - windowheight/2 > maxTop)
+                    if (iconPos.Y - windowheight / 2 > maxTop)
                         top = maxTop;
                     else
-                        top = iconPos.Y - windowheight/2;
+                        top = iconPos.Y - windowheight / 2;
                     break;
 
                 case TaskbarPosition.Right:
